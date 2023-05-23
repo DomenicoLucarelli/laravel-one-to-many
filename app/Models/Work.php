@@ -12,6 +12,6 @@ class Work extends Model
     protected $fillable = ['title','description','image','date','git_url'];
 
     public function type(){
-        $this->belongsTo(Type::class);
+       return $this->belongsTo(Type::class);
     }
 }

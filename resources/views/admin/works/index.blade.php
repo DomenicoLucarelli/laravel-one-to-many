@@ -3,8 +3,8 @@
 @section('content')
 <h1 class="text-center">I miei lavori</h1>
 <div class="container d-flex justify-content-center gap-4 mt-5">
-
-    @foreach ($works as $work)
+  @foreach ($works as $work)
+  
         
     <div class="card" style="width: 18rem;">
         <img src="{{$work->image}}" class="card-img-top" alt="...">
@@ -14,6 +14,7 @@
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><b>Date: </b>{{$work->date}}</li>
+          <li class="list-group-item"><b>Categoria:</b> {{$work->type->name ?? 'nessuna'}} </li>
         </ul>
         <div class="card-body text-center">
           <a href="{{$work->git_url}}" ><i class="fa-brands fa-github fs-1 "></i></a> 

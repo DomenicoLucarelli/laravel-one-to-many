@@ -10,6 +10,6 @@ class Type extends Model
     use HasFactory;
 
     public function works(){
-        $this->hasMany(Work::class);
+       return  $this->hasMany(Work::class);
     }
 }
