@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Type;
 use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,9 @@ class WorkController extends Controller
      */
     public function create()
     {
-        return view('admin/works/create');
+        $types = Type::all();
+
+        return view('admin/works/create', compact('types'));
     }
 
     /**
@@ -77,7 +80,8 @@ class WorkController extends Controller
      */
     public function edit(Work $work)
     {
-        return view('admin/works/edit', compact('work'));
+        $types = Type::all();
+        return view('admin/works/edit', compact('work','types'));
     }
 
     /**
@@ -123,6 +127,7 @@ class WorkController extends Controller
             'description'=> 'required|min:2',
             'image'=> 'required|min:2',
             'date'=> 'nullable',
+            'type_id'=>'nullable|exists:types,id',
             'git_url'=> 'required|min:2',
         ],
         
@@ -135,6 +140,7 @@ class WorkController extends Controller
             'description.min'=> 'Questo campo deve avere minimo 2 caratter',
             'image.required'=> 'Questo campo non può essere lascaito vuoto',
             'image.min'=> 'Questo campo deve avere minimo 2 caratter',
+            'type_id.exists'=>'Questo campo non è ammesso',
             'git_url.required'=> 'Questo campo non può essere lascaito vuoto',
             'git_url.min'=> 'Questo campo deve avere minimo 2 caratter',
             

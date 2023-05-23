@@ -1,10 +1,8 @@
 @extends('layouts/admin')
 
-@section('content')
-@extends('layouts/admin')
 
 @section('content')
-<h1 class="text-center mb-5 text-uppercase">Aggiungi un progetto</h1>
+<h1 class="text-center mb-5 text-uppercase">Modifica il progetto</h1>
 <div class="container d-flex flex-column">
     <form class="d-flex flex-column align-items-center gap-2" action="{{route('admin.works.update', $work)}}" method="POST">
 
@@ -53,6 +51,26 @@
 
         </div>
         @enderror
+
+        <label for="type_id">Inserisci Categoria</label>
+        <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @enderror">
+
+            <option value="">Nessuno</option>
+            
+            @foreach ($types as $type)
+            
+            <option value="{{$type->id}}" {{$type->id == old('type_id', $work->type_id) ? 'selected' : ''}}>{{$type->name}}</option>
+                
+            @endforeach
+        </select>
+
+        @error('type_id')
+        <div class="invalid-feedback">
+
+            {{$message}}
+
+        </div>
+        @enderror
             
         <label for="git_url">Modifica src GITHUB</label>
         <input class="form-control @error('git_url') is-invalid @enderror" type="text" id="git_url" name="git_url" placeholder="Inserisci src immagine" value="{{old('git_url') ?? $work->git_url}}">
@@ -69,5 +87,4 @@
     </form>
 </div>
 
-@endsection
 @endsection
