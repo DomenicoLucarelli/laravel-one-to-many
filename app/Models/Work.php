@@ -9,7 +9,7 @@ class Work extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','description','image','date','git_url'];
+    protected $fillable = ['title','type_id','description','image','date','git_url'];
 
     public function type(){
        return $this->belongsTo(Type::class);

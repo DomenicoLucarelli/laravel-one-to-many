@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Type;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class TypeController extends Controller
 {
@@ -15,7 +19,9 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = Type::all();
+
+        return view('admin/works_types/index', compact('types'));
     }
 
     /**
@@ -25,7 +31,7 @@ class TypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin/works_types/create');
     }
 
     /**
@@ -36,7 +42,19 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validation($request);
+
+        $formData = $request->all();
+
+        $type = new Type();
+
+        $type->fill($formData);
+
+        $type->slug = Str::slug($type->name, '-');
+
+        $type->save();
+
+        return redirect()->route('admin.types.index');
     }
 
     /**
@@ -47,7 +65,7 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
-        //
+        
     }
 
     /**
@@ -58,7 +76,8 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        //
+        return view('admin/works_types/edit', compact('type'));
+
     }
 
     /**
@@ -70,7 +89,18 @@ class TypeController extends Controller
      */
     public function update(Request $request, Type $type)
     {
-        //
+        $this->validation($request);
+        
+        $formData = $request->all();
+        
+        $type->slug = Str::slug($formData['name'], '-');
+
+        $type->update($formData);
+
+        $type->save();
+        
+
+        return redirect()->route('admin.types.index');
     }
 
     /**
@@ -81,6 +111,43 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        $type->delete();
+
+        return redirect()->route('admin.types.index');
     }
+
+    private function validation($request){
+
+        $formData = $request->all();
+
+        $validator = Validator::make($formData,[
+            
+            'name'=>'required|max:50|unique:types,name',
+        ],[
+            'name.required' =>'Questo campo non può essere lascaito vuoto',
+            'name.max' =>'Questo campo non può avere più di 50 caratteri',
+            'name.unique' =>'Questo nome esiste già'
+        ])->validate();
+
+        return $validator;
+    }
+
+//     private function my_validation($request,$id){
+
+//     $formData = $request->all();
+
+//     $validator = Validator::make($formData, [
+//         'name' => [
+//             'required',
+//             'max:50',
+//             Rule::unique('types', 'name')->ignore($id),
+//         ],
+//     ], [
+//         'name.required' => 'Questo campo non può essere lasciato vuoto',
+//         'name.max' => 'Questo campo non può avere più di 50 caratteri',
+//         'name.unique' => 'Questo nome esiste già',
+//     ])->validate();
+
+//     return $validator;
+// }
 }

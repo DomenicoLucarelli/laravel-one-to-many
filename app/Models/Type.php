@@ -9,6 +9,8 @@ class Type extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'slug'];
+
     public function works(){
        return  $this->hasMany(Work::class);
     }
